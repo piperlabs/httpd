@@ -1,0 +1,7 @@
+labels:
+  osid: centos
+actions:
+  - pkg: httpd httpd-tools
+  - copy:
+      from: httpd.conf
+      todir: /etc/httpd/conf

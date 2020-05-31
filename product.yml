@@ -1,3 +1,45 @@
 schema-version: 1.0
 name: httpd
 
+ports:
+  - "{{ httpPort }}"
+
+volumes:
+  - site:{{ documentRoot }}:.
+
+var:
+  httpPort: "8080"
+  owner: apache
+  group: apache
+  documentRoot: /var/www/html
+
+provision:
+  - group: "{{ owner }}"
+  - user:
+      name: "{{ owner }}"
+      group: "{{ group }}"
+
+       
+deploy:
+  inputs:
+    - site
+  actions:
+    - copy:
+        input: site
+        todir: /var/www/html
+        parse: false
+
+up: startapache
+
+down: stopapache 
+
+command:
+  startapache:
+    async: true
+    actions:
+      - shell: httpd -DFOREGROUND
+  stopapache:
+    container:
+      create: false
+    actions:
+      - shell: httpd -k stop
