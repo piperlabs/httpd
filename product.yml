@@ -12,13 +12,13 @@ var:
   owner: apache
   group: apache
   documentRoot: /var/www/html
+  pid: /run/httpd/httpd.pid
 
 provision:
   - group: "{{ owner }}"
   - user:
       name: "{{ owner }}"
       group: "{{ group }}"
-
        
 deploy:
   inputs:
@@ -35,11 +35,10 @@ down: stopapache
 
 command:
   startapache:
-    async: true
     actions:
-      - shell: httpd -DFOREGROUND
+      - shell: start.sh
   stopapache:
     container:
       create: false
     actions:
-      - shell: httpd -k stop
+      - shell: stop.sh
