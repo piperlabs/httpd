@@ -34,11 +34,8 @@ up: startapache
 down: stopapache 
 
 command:
-  startapache:
-    actions:
-      - shell: start.sh
+  startapache: start.sh
   stopapache:
     container:
       create: false
-    actions:
-      - shell: stop.sh
+    script: stop.sh
